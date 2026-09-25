@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
+<meta name="description" content="Predicted unsteady flow around 24 articulated robots, with a frame by frame accuracy comparison against the reference simulation.">
 <title>Articulated Robot CFD - 24 robots, 48 clips</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d1119'/%3E%3Cpath d='M5 20c4-7 8-11 11-11s7 4 11 11' stroke='%234fc3f7' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='9' r='2.6' fill='%23f5b53f'/%3E%3C/svg%3E">
 <style>
@@ -160,9 +161,8 @@ table.cmp-tbl td.soft{color:#ffb8a8}
   <div class="meta">
     <span>24 robots</span>
     <span>48 clips</span>
-    <span>900x600 - 10 fps</span>
-    <span>grid 150x50x100</span>
-    <span>seed 20260925</span>
+    <span>900x600, 10 fps</span>
+    <span>2 wind cases per robot</span>
   </div>
 </header>
 
@@ -197,7 +197,7 @@ table.cmp-tbl td.soft{color:#ffb8a8}
 <section id="clips">
   <div class="sec-head">
     <h2>Flow around 24 articulated robots</h2>
-    <p>Click a clip to pause or resume. Looping, muted, 50 frames each.</p>
+    <p>Click a clip to pause. Looping and muted, 50 frames each.</p>
   </div>
   <div class="grid" id="grid"></div>
 </section>
@@ -212,13 +212,12 @@ table.cmp-tbl td.soft{color:#ffb8a8}
     <li><b>Numerics.</b> Grid <code>150x50x100</code>, 200 solver steps, exported at <code>900x600, 10 fps, 50 frames</code>. The <code>t</code> burned into a frame is that case's own simulation time, so clips do not share a common clock.</li>
     <li><b>Accuracy section.</b> Case 1 is the quadruped <code>a1</code> at <code>u = 4 m/s, yaw 0 degrees</code>; case 2 is the humanoid <code>h1_2</code> at <code>u = 2 m/s, yaw -20 degrees</code>. Frames 6-24 are shown.</li>
     <li>The reference panel shows the simulated field itself and is recolored every frame. The three prediction panels show the pointwise deviation from that field on the robot surface and along the material pathlines, on one shared per-case scale, so they can be compared directly.</li>
-    <li>Table values are the per-frame <b>median</b> pointwise surface error reported by the visualization pipeline, averaged over the 19 displayed frames. They describe surface accuracy only and are not a substitute for the full benchmark.</li>
+    <li>Table values are the median pointwise surface error averaged over the 19 frames shown. Lower is better.</li>
   </ul>
   <div class="legend">
     <span><i style="background:var(--yaw-pos)"></i>Yaw +10 / +20 deg</span>
     <span><i style="background:var(--yaw-zero)"></i>Yaw 0 deg</span>
     <span><i style="background:var(--yaw-neg)"></i>Yaw -10 / -20 deg</span>
-    <span>Thumbnail = frame 40</span>
   </div>
 </footer>
 
@@ -232,7 +231,7 @@ const ROBOTS = [{"index":"01","id":"a1_description","name":"A1","clips":[{"raw":
 
 function videoHTML(clip, label){
   return '<figure class="clip">' +
-    '<video playsinline muted loop preload="none" title="Click to pause or resume" ' +
+    '<video playsinline muted loop preload="none" title="Click to pause" ' +
       'poster="' + clip.poster + '" data-src="' + clip.src + '" aria-label="' + label + '"></video>' +
     '<figcaption><span class="tag">u = ' + clip.speed + ' m/s</span>' +
       '<span class="tag yaw-' + clip.key + '">yaw ' + clip.yawText + '</span>' +
