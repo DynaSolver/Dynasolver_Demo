@@ -869,7 +869,7 @@
  },
  "reference_note": "Reference panels are recolored per frame from the ground-truth field; error panels share one fixed per-case scale.",
  "scale_strips": {
-  "coolwarm": "_scales/coolwarm.webp",
-  "turbo": "_scales/turbo.webp"
+  "coolwarm": "scales/coolwarm.webp",
+  "turbo": "scales/turbo.webp"
  }
 }
