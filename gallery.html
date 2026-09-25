@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>机器人 CFD 视频集 · 24 robots / 48 clips</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d1119'/%3E%3Cpath d='M5 20c4-7 8-11 11-11s7 4 11 11' stroke='%234fc3f7' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='9' r='2.6' fill='%23f5b53f'/%3E%3C/svg%3E">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#080a0f; --panel:rgba(255,255,255,.04);
+  --panel-strong:rgba(255,255,255,.07); --line:rgba(255,255,255,.09);
+  --line-strong:rgba(255,255,255,.18);
+  --text:#e9edf5; --muted:#94a1b6; --dim:#69748c;
+  --accent:#4fc3f7; --accent-soft:rgba(79,195,247,.14);
+  --yaw-pos:#f5b53f; --yaw-zero:#3fd6c0; --yaw-neg:#7aa2ff;
+  --radius:16px;
+  --mono:"JetBrains Mono",ui-monospace,"Cascadia Mono",Consolas,"DejaVu Sans Mono",monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI Variable Text","Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--sans); color:var(--text); background:var(--bg);
+  -webkit-font-smoothing:antialiased; line-height:1.5;
+  background-image:
+    radial-gradient(1200px 620px at 12% -10%, rgba(79,195,247,.13), transparent 60%),
+    radial-gradient(900px 520px at 92% 4%, rgba(167,139,250,.10), transparent 62%),
+    linear-gradient(180deg,#080a0f 0%,#0a0d14 46%,#080a0f 100%);
+  background-attachment:fixed;
+  min-height:100vh;
+}
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.5;
+  background-image:
+    linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(1000px 700px at 50% 0%, #000 30%, transparent 78%);
+}
+.wrap{position:relative; z-index:1; max-width:1680px; margin:0 auto; padding:0 22px 72px}
+
+/* ---------- 顶栏 ---------- */
+header.top{
+  position:sticky; top:0; z-index:20; padding:14px 0 12px;
+  background:linear-gradient(180deg, rgba(8,10,15,.92), rgba(8,10,15,.72));
+  backdrop-filter:blur(16px) saturate(150%);
+  border-bottom:1px solid var(--line);
+}
+.top-inner{display:flex; align-items:center; gap:18px; flex-wrap:wrap}
+.brand{display:flex; align-items:center; gap:12px; min-width:0}
+.mark{
+  width:38px; height:38px; border-radius:11px; flex:none;
+  background:linear-gradient(150deg,#12202e,#0b1017); border:1px solid var(--line-strong);
+  display:grid; place-items:center;
+}
+.mark svg{width:22px; height:22px}
+h1{margin:0; font-size:17px; letter-spacing:.2px; font-weight:650}
+.sub{margin:1px 0 0; font-size:12px; color:var(--muted); font-family:var(--mono)}
+.top-spacer{flex:1 1 auto}
+.search{
+  position:relative; display:flex; align-items:center; gap:8px;
+  background:var(--panel); border:1px solid var(--line); border-radius:11px;
+  padding:8px 12px; min-width:250px;
+}
+.search:focus-within{border-color:rgba(79,195,247,.5); box-shadow:0 0 0 3px var(--accent-soft)}
+.search svg{width:15px; height:15px; flex:none; opacity:.6}
+.search input{background:none; border:0; outline:none; color:var(--text); font:inherit; font-size:13.5px; width:100%}
+.search input::placeholder{color:var(--dim)}
+.btn{
+  font:inherit; font-size:12.5px; color:var(--text); cursor:pointer; text-decoration:none;
+  background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  padding:8px 12px; display:inline-flex; align-items:center; gap:7px; white-space:nowrap;
+  transition:background .16s, border-color .16s, color .16s, transform .16s;
+}
+.btn:hover{background:var(--panel-strong); border-color:var(--line-strong)}
+.btn:active{transform:translateY(1px)}
+.btn.on{background:var(--accent-soft); border-color:rgba(79,195,247,.45); color:#bfe9ff}
+.btn.ghost{background:transparent}
+.btn .dot{width:6px; height:6px; border-radius:50%; background:var(--dim)}
+.btn.on .dot{background:var(--accent); box-shadow:0 0 8px var(--accent)}
+.btn.icon{padding:8px 10px}
+
+/* ---------- 筛选 ---------- */
+.filters{display:flex; align-items:center; gap:16px; flex-wrap:wrap; padding:13px 0 3px}
+.fgroup{display:flex; align-items:center; gap:7px; flex-wrap:wrap}
+.flabel{font-size:11.5px; color:var(--dim); font-family:var(--mono); letter-spacing:.06em; text-transform:uppercase}
+.chip{
+  font-family:var(--mono); font-size:12px; line-height:1; padding:6px 10px; border-radius:999px;
+  background:rgba(255,255,255,.045); border:1px solid var(--line); color:var(--muted);
+  cursor:pointer; transition:all .15s; user-select:none;
+}
+.chip:hover{border-color:var(--line-strong); color:var(--text)}
+.chip.sel{background:var(--accent-soft); border-color:rgba(79,195,247,.5); color:#c8ecff}
+.chip.sel.yaw-pos{background:rgba(245,181,63,.15); border-color:rgba(245,181,63,.5); color:#ffd89a}
+.chip.sel.yaw-zero{background:rgba(63,214,192,.15); border-color:rgba(63,214,192,.5); color:#a5f0e4}
+.chip.sel.yaw-neg{background:rgba(122,162,255,.16); border-color:rgba(122,162,255,.5); color:#c3d3ff}
+.sep{width:1px; align-self:stretch; background:var(--line); margin:0 2px}
+.status{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  font-size:12px; color:var(--muted); font-family:var(--mono); padding:6px 0 18px;
+}
+.status b{color:var(--text); font-weight:600}
+
+/* ---------- 网格 ---------- */
+.grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(432px,1fr)); gap:16px}
+.card{
+  position:relative; border:1px solid var(--line); border-radius:var(--radius);
+  background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.018));
+  padding:12px 12px 11px; transition:border-color .2s, transform .2s, box-shadow .2s;
+}
+.card:hover{border-color:var(--line-strong); transform:translateY(-2px); box-shadow:0 24px 48px -32px #000}
+.card-head{display:flex; align-items:baseline; gap:9px; margin-bottom:10px; min-width:0}
+.idx{font-family:var(--mono); font-size:11px; color:var(--dim); padding-top:2px}
+.rname{margin:0; font-size:15.5px; font-weight:640; letter-spacing:.2px; white-space:nowrap}
+.rid{font-family:var(--mono); font-size:11px; color:var(--dim); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0}
+.card-head .btn{margin-left:auto; padding:5px 9px; font-size:11.5px}
+.clips{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.clips.solo{grid-template-columns:1fr}
+.clip{display:flex; flex-direction:column; gap:7px; margin:0; min-width:0}
+.clip-head{display:flex; align-items:center; gap:6px; min-width:0}
+.tag{
+  font-family:var(--mono); font-size:11px; line-height:1; padding:5px 7px; border-radius:7px;
+  background:rgba(255,255,255,.055); border:1px solid var(--line); color:#cbd6e6;
+}
+.tag.yaw-pos{color:#ffd08f; border-color:rgba(245,181,63,.34); background:rgba(245,181,63,.1)}
+.tag.yaw-zero{color:#a2ece0; border-color:rgba(63,214,192,.34); background:rgba(63,214,192,.1)}
+.tag.yaw-neg{color:#c2d2ff; border-color:rgba(122,162,255,.34); background:rgba(122,162,255,.11)}
+.spd-detail{font-family:var(--mono); font-size:10.5px; color:var(--dim); white-space:nowrap}
+.clip-head .play-btn{margin-left:auto}
+.frame{
+  position:relative; display:block; width:100%; padding:0; cursor:zoom-in;
+  aspect-ratio:3/2; border-radius:11px; overflow:hidden; background:#05070b;
+  border:1px solid rgba(255,255,255,.08); transition:border-color .18s, box-shadow .18s;
+}
+.frame:hover{border-color:rgba(79,195,247,.5); box-shadow:0 0 0 1px rgba(79,195,247,.25), 0 18px 34px -22px rgba(79,195,247,.6)}
+.frame:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.frame video{display:block; width:100%; height:100%; object-fit:cover; background:#05070b}
+.frame .hint{
+  position:absolute; right:7px; top:7px; font-family:var(--mono); font-size:10px;
+  padding:4px 7px; border-radius:7px; color:#dbe6f5;
+  background:rgba(8,10,15,.66); border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(6px); opacity:0; transition:opacity .18s;
+}
+.frame:hover .hint{opacity:1}
+.clip.playing .frame{border-color:rgba(79,195,247,.55)}
+.clip.playing .frame .hint{opacity:1; color:#bfe9ff}
+.empty{
+  grid-column:1/-1; text-align:center; color:var(--muted); padding:70px 20px;
+  border:1px dashed var(--line-strong); border-radius:var(--radius);
+}
+
+/* 紧凑模式 */
+body.compact .grid{grid-template-columns:repeat(auto-fill, minmax(274px,1fr)); gap:12px}
+body.compact .card{padding:9px}
+body.compact .rname{font-size:13px}
+body.compact .rid,body.compact .spd-detail,body.compact .card-head .btn{display:none}
+body.compact .clips{gap:7px}
+body.compact .tag{font-size:10px; padding:3px 5px}
+body.compact .idx{font-size:10px}
+body.compact .play-btn{display:none}
+
+/* ---------- 页脚 ---------- */
+footer{margin-top:44px; padding-top:22px; border-top:1px solid var(--line); color:var(--muted); font-size:12.5px}
+footer h3{margin:0 0 10px; font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--dim); font-family:var(--mono)}
+footer ul{margin:0; padding-left:18px; display:grid; gap:5px}
+footer code{font-family:var(--mono); font-size:12px; color:#c8d4e6; background:rgba(255,255,255,.05); padding:1px 5px; border-radius:5px}
+.legend{display:flex; gap:14px; flex-wrap:wrap; margin-top:14px; font-family:var(--mono); font-size:11.5px; color:var(--dim)}
+.legend i{display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px}
+
+/* ---------- 对照视图 ---------- */
+.lb{position:fixed; inset:0; z-index:60; display:none}
+.lb.open{display:grid; place-items:center; padding:3vh 0}
+.lb-bg{position:absolute; inset:0; background:rgba(4,6,10,.82); backdrop-filter:blur(10px)}
+.lb-panel{
+  position:relative; margin:0 auto; width:min(1560px,95vw); max-height:94vh; overflow:auto;
+  background:linear-gradient(180deg,#0e1219,#0a0d13);
+  border:1px solid var(--line-strong); border-radius:20px; box-shadow:0 50px 90px -50px #000;
+}
+.lb-head{
+  position:sticky; top:0; z-index:3; display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  padding:14px 18px; border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg, rgba(14,18,25,.97), rgba(14,18,25,.86)); backdrop-filter:blur(10px);
+}
+.lb-title{font-size:16px; font-weight:640; margin:0}
+.lb-sub{font-family:var(--mono); font-size:11.5px; color:var(--dim)}
+.lb-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; padding:16px 18px 6px}
+.lb-pane{border:1px solid var(--line); border-radius:14px; overflow:hidden; background:rgba(255,255,255,.02)}
+.lb-pane-head{display:flex; align-items:center; gap:8px; padding:9px 11px; border-bottom:1px solid var(--line)}
+.lb-pane-head .spacer{flex:1}
+.lb-pane-body{position:relative; background:#05070b; aspect-ratio:3/2}
+.lb-pane-body video{display:block; width:100%; height:100%; object-fit:contain; background:#05070b}
+.lb-pane-body:fullscreen{aspect-ratio:auto; height:100%}
+.lb-pane-time{
+  position:absolute; right:9px; top:9px; font-family:var(--mono); font-size:10.5px; color:#cfdcee;
+  background:rgba(8,10,15,.7); border:1px solid rgba(255,255,255,.14); padding:3px 7px; border-radius:7px;
+}
+.lb-bar{
+  position:sticky; bottom:0; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  padding:13px 18px; border-top:1px solid var(--line);
+  background:linear-gradient(0deg, rgba(10,13,19,.98), rgba(10,13,19,.88)); backdrop-filter:blur(10px);
+}
+.lb-bar .readout{font-family:var(--mono); font-size:12px; color:var(--muted)}
+.lb-bar .readout b{color:var(--text)}
+.lb-bar .spacer{flex:1}
+
+.toast{
+  position:fixed; left:50%; bottom:26px; transform:translate(-50%,16px); z-index:80;
+  background:rgba(14,18,25,.96); border:1px solid var(--line-strong); color:var(--text);
+  padding:10px 16px; border-radius:11px; font-size:13px; opacity:0; pointer-events:none;
+  transition:opacity .2s, transform .2s; box-shadow:0 20px 40px -24px #000;
+}
+.toast.show{opacity:1; transform:translate(-50%,0)}
+
+@media (max-width:900px){
+  .grid{grid-template-columns:1fr}
+  .lb-grid{grid-template-columns:1fr}
+  .search{min-width:0; flex:1 1 100%}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path d="M4.5 21c4.2-7.4 8.1-11.4 11.5-11.4S23.5 13.6 27.7 21" stroke="#4fc3f7" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="16" cy="8.6" r="2.7" fill="#f5b53f"/></svg>
+      </span>
+      <div>
+        <h1>机器人 CFD 视频集</h1>
+        <p class="sub">24 robots · 48 clips · 900×600 · 10 fps</p>
+      </div>
+    </div>
+    <div class="top-spacer"></div>
+    <label class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+      <input id="q" type="search" placeholder="搜索机器人 / 风况，例如 h1、solo、u8、+20" autocomplete="off">
+    </label>
+    <button class="btn" id="playAll"><span class="dot"></span>矩阵播放</button>
+    <button class="btn" id="density">紧凑视图</button>
+  </div>
+
+  <div class="filters">
+    <div class="fgroup">
+      <span class="flabel">风速</span>
+      <div class="fgroup" id="speedChips"></div>
+    </div>
+    <div class="sep"></div>
+    <div class="fgroup">
+      <span class="flabel">偏航角</span>
+      <div class="fgroup" id="yawChips"></div>
+    </div>
+    <div class="sep"></div>
+    <div class="fgroup">
+      <button class="btn on" id="hoverToggle"><span class="dot"></span>悬停播放</button>
+      <button class="btn on" id="linkToggle"><span class="dot"></span>联动两段</button>
+      <button class="btn ghost" id="reset">重置筛选</button>
+    </div>
+  </div>
+
+  <div class="status" id="status"></div>
+</header>
+
+<main class="grid" id="grid"></main>
+
+<footer>
+  <h3>数据说明</h3>
+  <ul>
+    <li>来源：<code>Articulated Robot CFD Data Generation</code>（WaterLily dense grid 求解器；机器人按给定运动做被动刚体，不含双向流固耦合）。</li>
+    <li>每个机器人从 16 个风况中抽取 2 个：风速 <code>u = 2–8 m/s</code>，偏航角 <code>−20° ~ +20°</code>；同一机器人的两段视频对应同一段运动在两个风况下的结果。</li>
+    <li>仿真网格 <code>150×50×100</code>，共 200 个输出时刻；导出视频 <code>900×600 · 10 fps · 50 帧</code>（每帧对应一次仿真输出）。</li>
+    <li>画面左上角内嵌的 <code>t</code> 是该算例自身的仿真时间；不同机器人的时间步不同，因此各视频的起止时刻并不相同。</li>
+    <li>抽取配置：<code>seed = 20260925</code>，每个机器人的两个风况由该种子随机选出。</li>
+    <li>操作：悬停自动播放、左右两段可联动；点击任意画面进入对照视图（← → 换机器人，空格播放/暂停，[ ] 逐帧）。</li>
+  </ul>
+  <div class="legend">
+    <span><i style="background:var(--yaw-pos)"></i>偏航 +10° / +20°</span>
+    <span><i style="background:var(--yaw-zero)"></i>偏航 0°</span>
+    <span><i style="background:var(--yaw-neg)"></i>偏航 −10° / −20°</span>
+    <span>缩略图取每个视频的第 40 帧</span>
+  </div>
+</footer>
+</div>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="对照视图">
+  <div class="lb-bg" data-close></div>
+  <div class="lb-panel">
+    <div class="lb-head">
+      <h2 class="lb-title" id="lbTitle">—</h2>
+      <span class="lb-sub" id="lbSub"></span>
+      <span class="spacer" style="flex:1"></span>
+      <button class="btn icon" id="lbPrev" title="上一个机器人（←）">←</button>
+      <button class="btn icon" id="lbNext" title="下一个机器人（→）">→</button>
+      <button class="btn icon" data-close title="关闭（Esc）">✕</button>
+    </div>
+    <div class="lb-grid" id="lbGrid"></div>
+    <div class="lb-bar">
+      <button class="btn" id="lbPlay">▶ 播放</button>
+      <button class="btn icon" id="lbRestart" title="回到开头">⏮</button>
+      <button class="btn icon" id="lbPrevFrame" title="上一帧（[）">◀|</button>
+      <button class="btn icon" id="lbNextFrame" title="下一帧（]）">|▶</button>
+      <button class="btn on" id="lbSync"><span class="dot"></span>同步</button>
+      <button class="btn on" id="lbLoop"><span class="dot"></span>循环</button>
+      <button class="btn" id="lbMute">🔇 静音</button>
+      <span class="readout" id="lbReadout"></span>
+      <span class="spacer"></span>
+      <button class="btn" id="lbCopy">复制路径</button>
+      <a class="btn" id="lbOpen" href="#" target="_blank" rel="noopener">打开原文件</a>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+/* ------------------------------------------------------------------ *
+ * 数据：每个机器人的两个风况（顺序与 manifest.csv 一致）
+ * ------------------------------------------------------------------ */
+const ROBOTS = [
+  ["a1_description",            "u2_yaw_p20", "u6_yaw_p20"],
+  ["aliengo_description",       "u3_yaw_m10", "u4_yaw_p0"],
+  ["anymal_b_description",      "u4_yaw_p20", "u6_yaw_p0"],
+  ["anymal_d_description",      "u4_yaw_p0",  "u8_yaw_p20"],
+  ["b1_description",            "u2_yaw_p20", "u6_yaw_m20"],
+  ["b2_description",            "u6_yaw_m20", "u8_yaw_p0"],
+  ["bolt_description",          "u2_yaw_m20", "u3_yaw_p10"],
+  ["booster_t1_description",    "u2_yaw_m20", "u4_yaw_m20"],
+  ["cassie_description",        "u4_yaw_p20", "u6_yaw_p0"],
+  ["ergocub_description",       "u4_yaw_p20", "u8_yaw_p20"],
+  ["g1_description",            "u2_yaw_m20", "u2_yaw_p0"],
+  ["go1_description",           "u4_yaw_p0",  "u6_yaw_m20"],
+  ["go2_description",           "u6_yaw_m20", "u7_yaw_p10"],
+  ["h1_2_description",          "u4_yaw_m20", "u8_yaw_m20"],
+  ["h1_description",            "u4_yaw_p0",  "u8_yaw_p0"],
+  ["jvrc_description",          "u4_yaw_p20", "u8_yaw_m20"],
+  ["laikago_description",       "u4_yaw_p20", "u7_yaw_m10"],
+  ["legolas_description",       "u7_yaw_p10", "u8_yaw_m20"],
+  ["mini_cheetah_description",  "u8_yaw_p0",  "u8_yaw_p20"],
+  ["rhea_description",          "u2_yaw_m20", "u8_yaw_p0"],
+  ["solo_description",          "u2_yaw_p20", "u8_yaw_p20"],
+  ["spot_mj_description",       "u4_yaw_p20", "u6_yaw_p0"],
+  ["talos_description",         "u3_yaw_p10", "u8_yaw_p20"],
+  ["thormang3_description",     "u4_yaw_m20", "u6_yaw_p20"]
+];
+
+const DISPLAY_NAME = {
+  a1_description:"A1", aliengo_description:"Aliengo", anymal_b_description:"ANYmal B",
+  anymal_d_description:"ANYmal D", b1_description:"B1", b2_description:"B2",
+  bolt_description:"Bolt", booster_t1_description:"Booster T1", cassie_description:"Cassie",
+  ergocub_description:"ergoCub", g1_description:"G1", go1_description:"Go1", go2_description:"Go2",
+  h1_2_description:"H1-2", h1_description:"H1", jvrc_description:"JVRC-1",
+  laikago_description:"Laikago", legolas_description:"Legolas", mini_cheetah_description:"Mini Cheetah",
+  rhea_description:"Rhea", solo_description:"Solo", spot_mj_description:"Spot (MJ)",
+  talos_description:"TALOS", thormang3_description:"THORMANG3"
+};
+
+/* ------------------------------------------------------------------ *
+ * 资源路径：页面和视频同目录时用相对路径，否则回退到绝对路径
+ * ------------------------------------------------------------------ */
+const ABS_BASE = "file:///C:/Users/17857/Documents/xwechat_files/wxid_uz48i8oo2zw412_6a3d/msg/file/2026-09/robot_cfd_final_24robots_48mp4_20260925/robot_cfd_final_24robots_48mp4_20260925/";
+const HERE = decodeURIComponent(location.pathname || "");
+const IN_PLACE = /robot_cfd_final_24robots_48mp4_20260925\/[^/]*$/i.test(HERE);
+const BASE = IN_PLACE ? "./" : ABS_BASE;
+const stemOf = (robot, cs) => robot + "__" + cs + "__final_corrected";
+const videoURL = (robot, cs) => BASE + stemOf(robot, cs) + ".mp4";
+const posterURL = (robot, cs) => BASE + "thumbnails/" + stemOf(robot, cs) + ".jpg";
+
+const FPS = 10;
+const CLIP_SECONDS = 5.0;
+
+function parseCase(cs){
+  const m = /^u(\d+)_yaw_([mp])(\d+)$/.exec(cs);
+  const speed = m ? parseInt(m[1], 10) : 0;
+  const yaw = m ? (m[2] === "m" ? -1 : 1) * parseInt(m[3], 10) : 0;
+  return { raw: cs, speed, yaw, key: yaw > 0 ? "pos" : yaw < 0 ? "neg" : "zero" };
+}
+const yawText = (yaw) => yaw > 0 ? "+" + yaw + "°" : yaw < 0 ? "−" + Math.abs(yaw) + "°" : "0°";
+
+const ROBOT_DATA = ROBOTS.map((row, i) => ({
+  index: i + 1,
+  id: row[0],
+  name: DISPLAY_NAME[row[0]] || row[0].replace(/_description$/, ""),
+  clips: [parseCase(row[1]), parseCase(row[2])]
+}));
+
+const ALL_SPEEDS = [...new Set(ROBOT_DATA.flatMap(r => r.clips.map(c => c.speed)))].sort((a, b) => a - b);
+const ALL_YAWS = [...new Set(ROBOT_DATA.flatMap(r => r.clips.map(c => c.yaw)))].sort((a, b) => b - a);
+
+/* ------------------------------------------------------------------ *
+ * 状态
+ * ------------------------------------------------------------------ */
+const state = {
+  query: "",
+  speeds: new Set(),
+  yaws: new Set(),
+  hoverPlay: true,
+  linkPair: true,
+  matrixPlaying: false,
+  lbRobot: 0,
+  lbSync: true,
+  lbLoop: true,
+  lbMuted: true,
+  lbPlaying: false
+};
+
+const $ = (sel, root = document) => root.querySelector(sel);
+const grid = $("#grid");
+const toastEl = $("#toast");
+let toastTimer = 0;
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove("show"), 1700);
+}
+
+/* ------------------------------------------------------------------ *
+ * 筛选逻辑
+ * ------------------------------------------------------------------ */
+function clipMatches(clip){
+  if (state.speeds.size && !state.speeds.has(clip.speed)) return false;
+  if (state.yaws.size && !state.yaws.has(clip.yaw)) return false;
+  const q = state.query;
+  if (!q) return true;
+  const hay = [
+    clip.raw, "u" + clip.speed, clip.speed + "m", clip.speed + " m/s",
+    "yaw", yawText(clip.yaw), String(clip.yaw), String(Math.abs(clip.yaw))
+  ].join(" ").toLowerCase();
+  return hay.includes(q);
+}
+function robotMatches(robot){
+  if (!state.speeds.size && !state.yaws.size && !state.query) return true;
+  if (state.speeds.size || state.yaws.size) return robot.clips.some(clipMatches);
+  return (robot.name + " " + robot.id).toLowerCase().includes(state.query) || robot.clips.some(clipMatches);
+}
+
+function buildChips(){
+  $("#speedChips").innerHTML = `<span class="chip sel" data-speed="all">全部</span>` +
+    ALL_SPEEDS.map(s => `<span class="chip" data-speed="${s}">u${s}</span>`).join("");
+  $("#yawChips").innerHTML = `<span class="chip sel" data-yaw="all">全部</span>` +
+    ALL_YAWS.map(y => `<span class="chip yaw-${y > 0 ? "pos" : y < 0 ? "neg" : "zero"}" data-yaw="${y}">${yawText(y)}</span>`).join("");
+
+  $("#speedChips").addEventListener("click", (e) => {
+    const chip = e.target.closest(".chip"); if (!chip) return;
+    const v = chip.dataset.speed;
+    if (v === "all") state.speeds.clear();
+    else { const n = +v; state.speeds.has(n) ? state.speeds.delete(n) : state.speeds.add(n); }
+    syncChips(); render();
+  });
+  $("#yawChips").addEventListener("click", (e) => {
+    const chip = e.target.closest(".chip"); if (!chip) return;
+    const v = chip.dataset.yaw;
+    if (v === "all") state.yaws.clear();
+    else { const n = +v; state.yaws.has(n) ? state.yaws.delete(n) : state.yaws.add(n); }
+    syncChips(); render();
+  });
+}
+function syncChips(){
+  document.querySelectorAll("#speedChips .chip").forEach(c => {
+    c.classList.toggle("sel", c.dataset.speed === "all" ? state.speeds.size === 0 : state.speeds.has(+c.dataset.speed));
+  });
+  document.querySelectorAll("#yawChips .chip").forEach(c => {
+    c.classList.toggle("sel", c.dataset.yaw === "all" ? state.yaws.size === 0 : state.yaws.has(+c.dataset.yaw));
+  });
+}
+
+/* ------------------------------------------------------------------ *
+ * 渲染
+ * ------------------------------------------------------------------ */
+function clipHTML(robot, clip){
+  return `
+  <figure class="clip" data-robot="${robot.id}" data-case="${clip.raw}">
+    <div class="clip-head">
+      <span class="tag">u${clip.speed}</span>
+      <span class="tag yaw-${clip.key}">${yawText(clip.yaw)}</span>
+      <span class="spd-detail">${clip.speed} m/s</span>
+      <button class="btn icon ghost play-btn" title="播放 / 暂停">▶</button>
+    </div>
+    <button class="frame" type="button" aria-label="${robot.name}，风速 ${clip.speed} m/s，偏航 ${yawText(clip.yaw)}；点击打开对照视图">
+      <video playsinline muted loop preload="none"
+             poster="${posterURL(robot.id, clip.raw)}"
+             data-src="${videoURL(robot.id, clip.raw)}"></video>
+      <span class="hint">点击对照 ↗</span>
+    </button>
+  </figure>`;
+}
+function cardHTML(robot){
+  return `
+  <section class="card" data-robot="${robot.id}">
+    <div class="card-head">
+      <span class="idx">${String(robot.index).padStart(2, "0")}</span>
+      <h2 class="rname">${robot.name}</h2>
+      <span class="rid" title="${robot.id}">${robot.id}</span>
+      <button class="btn ghost cmp-btn">对照视图</button>
+    </div>
+    <div class="clips">${robot.clips.map(c => clipHTML(robot, c)).join("")}</div>
+  </section>`;
+}
+
+function render(){
+  const rows = [];
+  let shownClips = 0;
+  for (const robot of ROBOT_DATA){
+    if (!robotMatches(robot)) continue;
+    const visible = robot.clips.filter(clipMatches).map(c => c.raw);
+    if (!visible.length) continue;
+    rows.push({ robot, visible });
+    shownClips += visible.length;
+  }
+  if (!rows.length){
+    grid.innerHTML = `<div class="empty">没有匹配的视频。<br>试试清空搜索框，或点击“重置筛选”。</div>`;
+  } else {
+    grid.innerHTML = rows.map(r => cardHTML(r.robot)).join("");
+    for (const row of rows){
+      const card = grid.querySelector('.card[data-robot="' + row.robot.id + '"]');
+      if (!card) continue;
+      card.querySelectorAll(".clip").forEach(el => {
+        if (!row.visible.includes(el.dataset.case)) el.remove();
+      });
+      if (card.querySelectorAll(".clip").length === 1) card.querySelector(".clips").classList.add("solo");
+    }
+  }
+  $("#status").innerHTML = `显示 <b>${rows.length}</b> / ${ROBOT_DATA.length} 个机器人 · <b>${shownClips}</b> / 48 段视频`
+    + (state.matrixPlaying ? ' · <b>矩阵播放中</b>' : '');
+  observeTiles();
+}
+
+/* ------------------------------------------------------------------ *
+ * 懒加载与悬停播放
+ * ------------------------------------------------------------------ */
+const io = new IntersectionObserver((entries) => {
+  for (const e of entries){
+    const v = e.target.querySelector("video");
+    if (!v) continue;
+    if (e.isIntersecting) attachVideo(v);
+    else detachVideo(v);
+  }
+}, { rootMargin: "700px 0px", threshold: 0.01 });
+
+function observeTiles(){
+  io.disconnect();
+  grid.querySelectorAll(".clip").forEach(el => io.observe(el));
+}
+function attachVideo(v){
+  if (!v || v.dataset.loaded) return;
+  v.dataset.loaded = "1";
+  v.src = v.dataset.src;
+  v.load();
+}
+function detachVideo(v){
+  if (!v || !v.dataset.loaded) return;
+  delete v.dataset.loaded;
+  delete v.dataset.auto;
+  v.pause();
+  v.removeAttribute("src");
+  v.load();
+  const clip = v.closest(".clip");
+  if (clip) clip.classList.remove("playing");
+}
+const clipVideo = (clipEl) => clipEl ? clipEl.querySelector("video") : null;
+const cardClips = (clipEl) => clipEl.closest(".card").querySelectorAll(".clip");
+
+function startVideo(clipEl){
+  const v = clipVideo(clipEl);
+  if (!v) return;
+  attachVideo(v);
+  if (v.currentTime > 0.05) { try { v.currentTime = 0; } catch(e){} }
+  v.dataset.auto = "1";
+  v.play().catch(() => {});
+  clipEl.classList.add("playing");
+}
+function playTile(clipEl, link){
+  startVideo(clipEl);
+  if (!link) return;
+  cardClips(clipEl).forEach(other => { if (other !== clipEl) startVideo(other); });
+}
+function stopTile(clipEl, link){
+  const targets = link ? cardClips(clipEl) : [clipEl];
+  targets.forEach(t => {
+    const v = clipVideo(t);
+    if (!v) return;
+    if (v.dataset.auto === "1"){
+      v.pause();
+      try { v.currentTime = 0; } catch(e){}
+      delete v.dataset.auto;
+    }
+    if (!state.matrixPlaying) t.classList.remove("playing");
+  });
+}
+
+grid.addEventListener("pointerover", (e) => {
+  if (!state.hoverPlay) return;
+  const clipEl = e.target.closest(".clip");
+  if (!clipEl || clipEl.contains(e.relatedTarget)) return;
+  playTile(clipEl, state.linkPair);
+});
+grid.addEventListener("pointerout", (e) => {
+  const clipEl = e.target.closest(".clip");
+  if (!clipEl || clipEl.contains(e.relatedTarget)) return;
+  stopTile(clipEl, state.linkPair);
+});
+grid.addEventListener("focusin", (e) => {
+  const clipEl = e.target.closest(".clip");
+  if (clipEl && state.hoverPlay) playTile(clipEl, false);
+});
+grid.addEventListener("focusout", (e) => {
+  const clipEl = e.target.closest(".clip");
+  if (clipEl) stopTile(clipEl, false);
+});
+grid.addEventListener("click", (e) => {
+  const clipEl = e.target.closest(".clip");
+  if (!clipEl) return;
+  const robotIndex = ROBOT_DATA.findIndex(r => r.id === clipEl.dataset.robot);
+  if (e.target.closest(".play-btn")){
+    const v = clipVideo(clipEl);
+    attachVideo(v);
+    if (v.paused){ v.dataset.auto = "1"; v.play().catch(() => {}); clipEl.classList.add("playing"); }
+    else { v.pause(); clipEl.classList.remove("playing"); }
+    return;
+  }
+  if (e.target.closest(".frame")) openLightbox(robotIndex, clipEl.dataset.case);
+});
+grid.addEventListener("click", (e) => {
+  const cmp = e.target.closest(".cmp-btn");
+  if (!cmp) return;
+  const card = cmp.closest(".card");
+  const idx = ROBOT_DATA.findIndex(r => r.id === card.dataset.robot);
+  openLightbox(idx, card.querySelector(".clip").dataset.case);
+});
+
+/* ------------------------------------------------------------------ *
+ * 对照视图
+ * ------------------------------------------------------------------ */
+const lb = $("#lb");
+const lbGrid = $("#lbGrid");
+let lbVideos = [];
+
+function buildLightbox(focusCase){
+  const robot = ROBOT_DATA[state.lbRobot];
+  $("#lbTitle").textContent = robot.name;
+  $("#lbSub").textContent = robot.id + " · 两个风况 · 900×600 · 10 fps · 5 s";
+  lbGrid.innerHTML = robot.clips.map((clip) => `
+    <div class="lb-pane" data-case="${clip.raw}">
+      <div class="lb-pane-head">
+        <span class="tag">u${clip.speed}</span>
+        <span class="tag yaw-${clip.key}">${yawText(clip.yaw)}</span>
+        <span class="lb-sub">${clip.speed} m/s · 偏航 ${yawText(clip.yaw)}</span>
+        <span class="spacer"></span>
+        <button class="btn icon ghost fs-btn" title="全屏">⛶</button>
+      </div>
+      <div class="lb-pane-body">
+        <video playsinline preload="auto" muted loop
+               poster="${posterURL(robot.id, clip.raw)}" src="${videoURL(robot.id, clip.raw)}"></video>
+        <span class="lb-pane-time"></span>
+      </div>
+    </div>`).join("");
+
+  lbVideos = [...lbGrid.querySelectorAll("video")];
+  lbVideos.forEach(v => { v.muted = state.lbMuted; v.loop = state.lbLoop; });
+  lbGrid.querySelectorAll(".fs-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const body = btn.closest(".lb-pane-body");
+      try { body.requestFullscreen(); } catch(e){}
+    });
+  });
+  $("#lbOpen").href = videoURL(robot.id, robot.clips[0].raw);
+  if (focusCase){
+    const pane = lbGrid.querySelector('.lb-pane[data-case="' + focusCase + '"]');
+    if (pane) pane.style.borderColor = "rgba(79,195,247,.45)";
+  }
+  updateLoopSyncButtons();
+  panesTimeUpdate();
+}
+
+function openLightbox(robotIndex, focusCase){
+  state.lbRobot = robotIndex >= 0 ? robotIndex : 0;
+  buildLightbox(focusCase);
+  lb.classList.add("open");
+  document.body.style.overflow = "hidden";
+  requestAnimationFrame(() => {
+    lbVideos.forEach(v => { try { v.currentTime = 0; } catch(e){} v.play().catch(() => {}); });
+    state.lbPlaying = true;
+    updateTransport();
+  });
+}
+function closeLightbox(){
+  lb.classList.remove("open");
+  document.body.style.overflow = "";
+  lbVideos.forEach(v => { v.pause(); v.removeAttribute("src"); v.load(); });
+  lbVideos = [];
+  state.lbPlaying = false;
+}
+const master = () => lbVideos[0];
+
+function panesTimeUpdate(){
+  if (!lbVideos.length) return;
+  const m = master();
+  if (!m) return;
+  if (state.lbSync){
+    for (const v of lbVideos){
+      if (v === m || v.seeking) continue;
+      if (Math.abs(v.currentTime - m.currentTime) > 0.12) { try { v.currentTime = m.currentTime; } catch(e){} }
+    }
+  }
+  const frame = Math.max(1, Math.min(50, Math.round(m.currentTime * FPS) + 1));
+  $("#lbReadout").innerHTML = `帧 <b>${frame}</b> / 50 · 播放位置 <b>${m.currentTime.toFixed(2)} s</b> / ${CLIP_SECONDS.toFixed(1)} s`;
+  lbGrid.querySelectorAll(".lb-pane").forEach((pane, i) => {
+    const v = lbVideos[i];
+    const span = pane.querySelector(".lb-pane-time");
+    if (v && span) span.textContent = "第 " + Math.max(1, Math.min(50, Math.round(v.currentTime * FPS) + 1)) + " / 50 帧";
+  });
+}
+lbGrid.addEventListener("timeupdate", panesTimeUpdate, true);
+lbGrid.addEventListener("play", (e) => {
+  if (!state.lbSync) return;
+  lbVideos.forEach(v => { if (v !== e.target && v.paused) v.play().catch(() => {}); });
+}, true);
+lbGrid.addEventListener("pause", (e) => {
+  if (!state.lbSync) return;
+  lbVideos.forEach(v => { if (v !== e.target && !v.paused) v.pause(); });
+}, true);
+
+function updateTransport(){ $("#lbPlay").textContent = state.lbPlaying ? "⏸ 暂停" : "▶ 播放"; }
+function updateLoopSyncButtons(){
+  $("#lbSync").classList.toggle("on", state.lbSync);
+  $("#lbLoop").classList.toggle("on", state.lbLoop);
+  $("#lbMute").textContent = state.lbMuted ? "🔇 静音" : "🔊 有声";
+}
+function setPlaying(on){
+  state.lbPlaying = on;
+  lbVideos.forEach(v => on ? v.play().catch(() => {}) : v.pause());
+  updateTransport();
+}
+function stepFrame(dir){
+  const m = master();
+  if (!m) return;
+  const next = Math.max(0, Math.min(49, Math.round(m.currentTime * FPS) + dir)) / FPS;
+  lbVideos.forEach(v => { v.pause(); try { v.currentTime = next; } catch(e){} });
+  state.lbPlaying = false;
+  updateTransport();
+  setTimeout(panesTimeUpdate, 60);
+}
+function jumpRobot(delta){
+  state.lbRobot = (state.lbRobot + delta + ROBOT_DATA.length) % ROBOT_DATA.length;
+  buildLightbox();
+  lbVideos.forEach(v => { try { v.currentTime = 0; } catch(e){} v.play().catch(() => {}); });
+  state.lbPlaying = true;
+  updateTransport();
+}
+
+$("#lbPlay").addEventListener("click", () => setPlaying(!state.lbPlaying));
+$("#lbRestart").addEventListener("click", () => {
+  lbVideos.forEach(v => { try { v.currentTime = 0; } catch(e){} });
+  setPlaying(true);
+});
+$("#lbPrevFrame").addEventListener("click", () => stepFrame(-1));
+$("#lbNextFrame").addEventListener("click", () => stepFrame(1));
+$("#lbSync").addEventListener("click", () => {
+  state.lbSync = !state.lbSync;
+  updateLoopSyncButtons();
+  if (state.lbSync) panesTimeUpdate();
+});
+$("#lbLoop").addEventListener("click", () => {
+  state.lbLoop = !state.lbLoop;
+  lbVideos.forEach(v => { v.loop = state.lbLoop; });
+  updateLoopSyncButtons();
+});
+$("#lbMute").addEventListener("click", () => {
+  state.lbMuted = !state.lbMuted;
+  lbVideos.forEach(v => { v.muted = state.lbMuted; });
+  updateLoopSyncButtons();
+});
+$("#lbPrev").addEventListener("click", () => jumpRobot(-1));
+$("#lbNext").addEventListener("click", () => jumpRobot(1));
+document.querySelectorAll("[data-close]").forEach(el => el.addEventListener("click", closeLightbox));
+
+$("#lbCopy").addEventListener("click", async () => {
+  const robot = ROBOT_DATA[state.lbRobot];
+  const text = robot.clips.map(c => decodeURIComponent(videoURL(robot.id, c.raw))).join("\n");
+  try {
+    await navigator.clipboard.writeText(text);
+    toast("已复制两条视频的路径");
+  } catch(e){
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); toast("已复制两条视频的路径"); }
+    catch(_) { toast("复制失败，请手动复制"); }
+    ta.remove();
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (!lb.classList.contains("open")){
+    if (e.key === "/" && document.activeElement !== $("#q")){ e.preventDefault(); $("#q").focus(); }
+    return;
+  }
+  if (e.key === "Escape") closeLightbox();
+  else if (e.key === "ArrowLeft") jumpRobot(-1);
+  else if (e.key === "ArrowRight") jumpRobot(1);
+  else if (e.key === " "){ e.preventDefault(); setPlaying(!state.lbPlaying); }
+  else if (e.key === "[" || e.key === ",") stepFrame(-1);
+  else if (e.key === "]" || e.key === ".") stepFrame(1);
+});
+
+/* ------------------------------------------------------------------ *
+ * 顶栏交互
+ * ------------------------------------------------------------------ */
+$("#q").addEventListener("input", (e) => { state.query = e.target.value.trim().toLowerCase(); render(); });
+$("#hoverToggle").addEventListener("click", (e) => {
+  state.hoverPlay = !state.hoverPlay;
+  e.currentTarget.classList.toggle("on", state.hoverPlay);
+});
+$("#linkToggle").addEventListener("click", (e) => {
+  state.linkPair = !state.linkPair;
+  e.currentTarget.classList.toggle("on", state.linkPair);
+});
+$("#density").addEventListener("click", (e) => {
+  const on = !document.body.classList.contains("compact");
+  document.body.classList.toggle("compact", on);
+  e.currentTarget.classList.toggle("on", on);
+  e.currentTarget.textContent = on ? "卡片视图" : "紧凑视图";
+});
+$("#reset").addEventListener("click", () => {
+  state.query = "";
+  state.speeds.clear();
+  state.yaws.clear();
+  $("#q").value = "";
+  syncChips();
+  render();
+});
+$("#playAll").addEventListener("click", (e) => {
+  state.matrixPlaying = !state.matrixPlaying;
+  e.currentTarget.classList.toggle("on", state.matrixPlaying);
+  e.currentTarget.innerHTML = `<span class="dot"></span>${state.matrixPlaying ? "全部暂停" : "矩阵播放"}`;
+  grid.querySelectorAll(".clip").forEach(el => {
+    const v = clipVideo(el);
+    if (!v) return;
+    if (state.matrixPlaying){
+      attachVideo(v);
+      if (v.currentTime > 0.05) { try { v.currentTime = 0; } catch(err){} }
+      v.play().catch(() => {});
+      el.classList.add("playing");
+    } else {
+      v.pause();
+      delete v.dataset.auto;
+      el.classList.remove("playing");
+    }
+  });
+  $("#status").innerHTML = `显示 <b>${grid.querySelectorAll(".card").length}</b> / ${ROBOT_DATA.length} 个机器人 · `
+    + `<b>${grid.querySelectorAll(".clip").length}</b> / 48 段视频`
+    + (state.matrixPlaying ? ' · <b>矩阵播放中</b>' : '');
+});
+
+buildChips();
+render();
+
+/* 深链接：#compare=h1_description 直接打开该机器人的对照视图 */
+function applyHash(){
+  const hash = location.hash || "";
+  if (/[#&]compact\b/.test(hash)) $("#density").click();
+  const m = /[#&]compare=([^&]+)/.exec(hash);
+  if (!m) return;
+  const robotId = decodeURIComponent(m[1]);
+  const idx = ROBOT_DATA.findIndex(r => r.id === robotId || r.name.toLowerCase() === robotId.toLowerCase());
+  if (idx >= 0) openLightbox(idx);
+}
+window.addEventListener("hashchange", applyHash);
+applyHash();
+</script>
+</body>
+</html>

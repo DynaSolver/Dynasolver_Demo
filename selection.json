@@ -1,0 +1,197 @@
+{
+  "seed": 20260925,
+  "tasks": [
+    {
+      "robot": "a1_description",
+      "case": "u2_yaw_p20"
+    },
+    {
+      "robot": "a1_description",
+      "case": "u6_yaw_p20"
+    },
+    {
+      "robot": "aliengo_description",
+      "case": "u3_yaw_m10"
+    },
+    {
+      "robot": "aliengo_description",
+      "case": "u4_yaw_p0"
+    },
+    {
+      "robot": "anymal_b_description",
+      "case": "u4_yaw_p20"
+    },
+    {
+      "robot": "anymal_b_description",
+      "case": "u6_yaw_p0"
+    },
+    {
+      "robot": "anymal_d_description",
+      "case": "u4_yaw_p0"
+    },
+    {
+      "robot": "anymal_d_description",
+      "case": "u8_yaw_p20"
+    },
+    {
+      "robot": "b1_description",
+      "case": "u2_yaw_p20"
+    },
+    {
+      "robot": "b1_description",
+      "case": "u6_yaw_m20"
+    },
+    {
+      "robot": "b2_description",
+      "case": "u6_yaw_m20"
+    },
+    {
+      "robot": "b2_description",
+      "case": "u8_yaw_p0"
+    },
+    {
+      "robot": "bolt_description",
+      "case": "u2_yaw_m20"
+    },
+    {
+      "robot": "bolt_description",
+      "case": "u3_yaw_p10"
+    },
+    {
+      "robot": "booster_t1_description",
+      "case": "u2_yaw_m20"
+    },
+    {
+      "robot": "booster_t1_description",
+      "case": "u4_yaw_m20"
+    },
+    {
+      "robot": "cassie_description",
+      "case": "u4_yaw_p20"
+    },
+    {
+      "robot": "cassie_description",
+      "case": "u6_yaw_p0"
+    },
+    {
+      "robot": "ergocub_description",
+      "case": "u4_yaw_p20"
+    },
+    {
+      "robot": "ergocub_description",
+      "case": "u8_yaw_p20"
+    },
+    {
+      "robot": "g1_description",
+      "case": "u2_yaw_m20"
+    },
+    {
+      "robot": "g1_description",
+      "case": "u2_yaw_p0"
+    },
+    {
+      "robot": "go1_description",
+      "case": "u4_yaw_p0"
+    },
+    {
+      "robot": "go1_description",
+      "case": "u6_yaw_m20"
+    },
+    {
+      "robot": "go2_description",
+      "case": "u6_yaw_m20"
+    },
+    {
+      "robot": "go2_description",
+      "case": "u7_yaw_p10"
+    },
+    {
+      "robot": "h1_2_description",
+      "case": "u4_yaw_m20"
+    },
+    {
+      "robot": "h1_2_description",
+      "case": "u8_yaw_m20"
+    },
+    {
+      "robot": "h1_description",
+      "case": "u4_yaw_p0"
+    },
+    {
+      "robot": "h1_description",
+      "case": "u8_yaw_p0"
+    },
+    {
+      "robot": "jvrc_description",
+      "case": "u4_yaw_p20"
+    },
+    {
+      "robot": "jvrc_description",
+      "case": "u8_yaw_m20"
+    },
+    {
+      "robot": "laikago_description",
+      "case": "u4_yaw_p20"
+    },
+    {
+      "robot": "laikago_description",
+      "case": "u7_yaw_m10"
+    },
+    {
+      "robot": "legolas_description",
+      "case": "u7_yaw_p10"
+    },
+    {
+      "robot": "legolas_description",
+      "case": "u8_yaw_m20"
+    },
+    {
+      "robot": "mini_cheetah_description",
+      "case": "u8_yaw_p0"
+    },
+    {
+      "robot": "mini_cheetah_description",
+      "case": "u8_yaw_p20"
+    },
+    {
+      "robot": "rhea_description",
+      "case": "u2_yaw_m20"
+    },
+    {
+      "robot": "rhea_description",
+      "case": "u8_yaw_p0"
+    },
+    {
+      "robot": "solo_description",
+      "case": "u2_yaw_p20"
+    },
+    {
+      "robot": "solo_description",
+      "case": "u8_yaw_p20"
+    },
+    {
+      "robot": "spot_mj_description",
+      "case": "u4_yaw_p20"
+    },
+    {
+      "robot": "spot_mj_description",
+      "case": "u6_yaw_p0"
+    },
+    {
+      "robot": "talos_description",
+      "case": "u3_yaw_p10"
+    },
+    {
+      "robot": "talos_description",
+      "case": "u8_yaw_p20"
+    },
+    {
+      "robot": "thormang3_description",
+      "case": "u4_yaw_m20"
+    },
+    {
+      "robot": "thormang3_description",
+      "case": "u6_yaw_p20"
+    }
+  ]
+}
