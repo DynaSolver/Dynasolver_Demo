@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "video_count": 48,
-  "robot_count": 24,
+  "video_count": 42,
+  "robot_count": 21,
   "videos_per_robot": {
     "a1_description": 2,
     "aliengo_description": 2,
@@ -14,7 +14,6 @@
     "cassie_description": 2,
     "ergocub_description": 2,
     "g1_description": 2,
-    "go1_description": 2,
     "go2_description": 2,
     "h1_2_description": 2,
     "h1_description": 2,
@@ -22,9 +21,7 @@
     "laikago_description": 2,
     "legolas_description": 2,
     "mini_cheetah_description": 2,
-    "rhea_description": 2,
     "solo_description": 2,
-    "spot_mj_description": 2,
     "talos_description": 2,
     "thormang3_description": 2
   },
@@ -273,28 +270,6 @@
       "nb_read_frames": "50"
     },
     {
-      "robot": "go1_description",
-      "case": "u4_yaw_p0",
-      "file": "go1_description__u4_yaw_p0__final_corrected.mp4",
-      "bytes": 1071522,
-      "width": 900,
-      "height": 600,
-      "r_frame_rate": "10/1",
-      "duration": "5.000000",
-      "nb_read_frames": "50"
-    },
-    {
-      "robot": "go1_description",
-      "case": "u6_yaw_m20",
-      "file": "go1_description__u6_yaw_m20__final_corrected.mp4",
-      "bytes": 1222371,
-      "width": 900,
-      "height": 600,
-      "r_frame_rate": "10/1",
-      "duration": "5.000000",
-      "nb_read_frames": "50"
-    },
-    {
       "robot": "go2_description",
       "case": "u6_yaw_m20",
       "file": "go2_description__u6_yaw_m20__final_corrected.mp4",
@@ -449,28 +424,6 @@
       "nb_read_frames": "50"
     },
     {
-      "robot": "rhea_description",
-      "case": "u2_yaw_m20",
-      "file": "rhea_description__u2_yaw_m20__final_corrected.mp4",
-      "bytes": 1026799,
-      "width": 900,
-      "height": 600,
-      "r_frame_rate": "10/1",
-      "duration": "5.000000",
-      "nb_read_frames": "50"
-    },
-    {
-      "robot": "rhea_description",
-      "case": "u8_yaw_p0",
-      "file": "rhea_description__u8_yaw_p0__final_corrected.mp4",
-      "bytes": 1237861,
-      "width": 900,
-      "height": 600,
-      "r_frame_rate": "10/1",
-      "duration": "5.000000",
-      "nb_read_frames": "50"
-    },
-    {
       "robot": "solo_description",
       "case": "u2_yaw_p20",
       "file": "solo_description__u2_yaw_p20__final_corrected.mp4",
@@ -486,28 +439,6 @@
       "case": "u8_yaw_p20",
       "file": "solo_description__u8_yaw_p20__final_corrected.mp4",
       "bytes": 930769,
-      "width": 900,
-      "height": 600,
-      "r_frame_rate": "10/1",
-      "duration": "5.000000",
-      "nb_read_frames": "50"
-    },
-    {
-      "robot": "spot_mj_description",
-      "case": "u4_yaw_p20",
-      "file": "spot_mj_description__u4_yaw_p20__final_corrected.mp4",
-      "bytes": 937933,
-      "width": 900,
-      "height": 600,
-      "r_frame_rate": "10/1",
-      "duration": "5.000000",
-      "nb_read_frames": "50"
-    },
-    {
-      "robot": "spot_mj_description",
-      "case": "u6_yaw_p0",
-      "file": "spot_mj_description__u6_yaw_p0__final_corrected.mp4",
-      "bytes": 1007525,
       "width": 900,
       "height": 600,
       "r_frame_rate": "10/1",

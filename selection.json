@@ -90,14 +90,6 @@
       "case": "u2_yaw_p0"
     },
     {
-      "robot": "go1_description",
-      "case": "u4_yaw_p0"
-    },
-    {
-      "robot": "go1_description",
-      "case": "u6_yaw_m20"
-    },
-    {
       "robot": "go2_description",
       "case": "u6_yaw_m20"
     },
@@ -154,28 +146,12 @@
       "case": "u8_yaw_p20"
     },
     {
-      "robot": "rhea_description",
-      "case": "u2_yaw_m20"
-    },
-    {
-      "robot": "rhea_description",
-      "case": "u8_yaw_p0"
-    },
-    {
       "robot": "solo_description",
       "case": "u2_yaw_p20"
     },
     {
       "robot": "solo_description",
       "case": "u8_yaw_p20"
-    },
-    {
-      "robot": "spot_mj_description",
-      "case": "u4_yaw_p20"
-    },
-    {
-      "robot": "spot_mj_description",
-      "case": "u6_yaw_p0"
     },
     {
       "robot": "talos_description",
